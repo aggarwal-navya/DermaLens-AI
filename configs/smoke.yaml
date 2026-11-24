@@ -1,0 +1,13 @@
+# Tiny settings to check the whole pipeline runs (minutes on a CPU). Never report these results.
+seed: 42
+data: {image_size: 96, cache_short_side: 112, open_set: true, other_cap_per_diagnosis: 25, color_constancy: true,
+       use_metadata: true, meta_dropout: 0.3, near_duplicate_bits: 6, split_folds: 7,
+       split_seed_trials: 10, min_images_per_class_in_eval: 3}
+model: {name: resnet18, pretrained: false, drop_rate: 0.2}
+train: {epochs: 3, freeze_epochs: 1, warmup_epochs: 1, head_lr: 0.01, lr: 0.001, layer_decay: 0.75,
+        weight_decay: 0.05, label_smoothing: 0.1, mixup_alpha: 0.4, mixup_prob: 0.5, ema_decay: 0.9,
+        patience: 3, grad_clip: 1.0, amp: true, batch_size: 16, num_workers: 0}
+compare: {models: [resnet18, efficientnet_b0], seeds: [42], ensemble_top_k: 2}
+open_set: {target_tpr: 0.95, min_skin_ratio: 0.15}
+evaluate: {bootstrap_samples: 100}
+tracking: {wandb: false, project: dermalens-ai}

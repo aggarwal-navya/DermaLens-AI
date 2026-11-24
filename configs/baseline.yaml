@@ -1,0 +1,56 @@
+# DermaLens AI - experiment settings.
+# Every notebook reads this file; change a number here, not inside a cell.
+
+seed: 42
+
+data:
+  image_size: 288          # model input, pixels (v3: 224 -> 288, finer texture)
+  cache_short_side: 448    # resized copies on disk (shorter side, pixels)
+  open_set: true           # add the "Other" class (other skin diseases)
+  other_cap_per_diagnosis: 25
+  color_constancy: true    # Shades-of-Gray, weakens the dataset-source shortcut
+  use_metadata: true       # age group, sex, body region
+  meta_dropout: 0.3        # hide each metadata field 30% of the time in training
+  near_duplicate_bits: 6   # perceptual-hash distance (of 64 bits) that counts as "same photo"
+  split_folds: 7           # 7 folds -> ~14% val, ~14% test, ~72% train
+  split_seed_trials: 50    # seeds tried when choosing the most balanced split
+  min_images_per_class_in_eval: 10
+
+model:
+  name: convnext_small     # see src/dermalens/model.py MODEL_ZOO for options
+  pretrained: true
+  drop_rate: 0.3
+
+train:
+  epochs: 30
+  freeze_epochs: 1
+  warmup_epochs: 2
+  head_lr: 0.001
+  lr: 0.0002
+  layer_decay: 0.75
+  weight_decay: 0.05
+  label_smoothing: 0.1
+  mixup_alpha: 0.4
+  mixup_prob: 0.5
+  ema_decay: 0.999
+  patience: 6
+  grad_clip: 1.0
+  amp: true
+  batch_size: 24
+  num_workers: 2
+
+compare:                   # notebook 08
+  models: [efficientnet_b0, efficientnetv2_s, convnext_small, swin_tiny, vit_base_dinov2]
+  seeds: [42, 7]
+  ensemble_top_k: 3        # notebook 09 ensembles the best k models
+
+open_set:                  # notebook 10
+  target_tpr: 0.95         # keep 95% of known-class validation images
+  min_skin_ratio: 0.15
+
+evaluate:
+  bootstrap_samples: 1000
+
+tracking:
+  wandb: false             # set true after `wandb login`
+  project: dermalens-ai

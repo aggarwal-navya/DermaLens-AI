@@ -1,0 +1,7 @@
+# Core (Colab already has torch, torchvision, numpy, pandas, scikit-learn, matplotlib, seaborn, pillow, scipy)
+timm>=1.0
+imagehash>=4.3
+pyyaml>=6.0
+tqdm>=4.66
+# Optional
+wandb>=0.17          # experiment tracking (configs: tracking.wandb: true)

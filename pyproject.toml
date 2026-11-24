@@ -1,0 +1,19 @@
+[project]
+name = "dermalens"
+version = "2.0.0"
+description = "Skin disease classification for Indian and South Asian skin (B.Tech project, MIT Meerut)"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E731", "B023", "B008"]   # small lambdas are used as metric functions; FastAPI's File(...) default
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/nbsrc/*" = ["E501"]   # these files hold notebook text; long markdown lines are fine there
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

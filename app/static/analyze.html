@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analyse a photo — DermaLens AI</title>
+<meta name="description" content="Upload a skin photo and optional details for an explainable AI analysis. Research prototype, not a diagnosis.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="analyze">
+<a class="skip-link" href="#main">Skip to content</a>
+<header id="site-header"></header>
+
+<main id="main">
+  <section class="page-head no-print">
+    <div class="container">
+      <span class="eyebrow">Analysis tool</span>
+      <h1 style="font-size:clamp(1.75rem,3.5vw,2.5rem)">Analyse a skin photo</h1>
+      <p class="lead" style="margin:0">Upload a clear photo and, if you like, a few details. Takes a few seconds. Your photo is processed in memory and never stored.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:32px">
+    <div class="container">
+      <form id="analyse-form" class="no-print" novalidate>
+        <div class="tool-grid">
+          <div class="panel">
+            <div class="panel-title"><span class="step-num">1</span><h2>Photo</h2><span class="opt">Required</span></div>
+            <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-describedby="dz-help" aria-label="Choose a skin photo, or drag and drop one here">
+              <svg class="dz-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="5"/><circle cx="17" cy="20" r="4"/><path d="M6 33l10-9 8 7 6-5 12 10"/></svg>
+              <p><strong>Drag &amp; drop a photo here</strong></p>
+              <p class="muted small" id="dz-help">JPEG, PNG or WebP · up to 10 MB</p>
+              <div class="btn-row">
+                <button type="button" class="btn btn-primary" id="pick-btn"><span data-icon="upload"></span>Choose file</button>
+                <button type="button" class="btn btn-ghost" id="camera-btn"><span data-icon="camera"></span>Take photo</button>
+              </div>
+            </div>
+            <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" class="sr-only" tabindex="-1" aria-hidden="true">
+            <input type="file" id="camera-input" accept="image/*" capture="environment" class="sr-only" tabindex="-1" aria-hidden="true">
+            <div id="preview" class="preview">
+              <img id="preview-img" class="preview-img" alt="Preview of the selected photo">
+              <div class="preview-meta">
+                <span class="fname" id="preview-name"></span>
+                <div class="btn-row">
+                  <button type="button" class="btn btn-ghost" id="replace-btn"><span data-icon="refresh"></span>Replace</button>
+                  <button type="button" class="btn btn-ghost" id="remove-btn"><span data-icon="trash"></span>Remove</button>
+                </div>
+              </div>
+            </div>
+            <div id="file-error" class="form-error" role="alert"></div>
+            <ul class="hint-list">
+              <li><span data-icon="check"></span>Close-up of the affected area, in focus</li>
+              <li><span data-icon="check"></span>Good daylight, no flash glare or filters</li>
+              <li><span data-icon="check"></span>Fill most of the frame with skin</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title"><span class="step-num">2</span><h2>About the patient</h2><span class="opt">All optional</span></div>
+            <p class="muted small" style="margin-top:-8px">These details help the model, the same way they help a dermatologist. Skip any you prefer not to share.</p>
+            <div class="field">
+              <label for="age-group">Age group</label>
+              <select id="age-group" name="age_group"><option value="">Prefer not to say</option></select>
+            </div>
+            <fieldset class="field">
+              <legend>Sex</legend>
+              <div class="seg" id="sex-group"></div>
+            </fieldset>
+            <fieldset class="field" style="margin-bottom:0">
+              <legend>Body site <span class="muted small" style="font-weight:400">— select all that apply</span></legend>
+              <div class="chips" id="region-chips" role="group" aria-label="Body sites"></div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="analyse-bar">
+          <button type="submit" class="btn btn-primary btn-lg" id="analyse-btn" disabled><span data-icon="cpu"></span><span class="lbl">Analyse photo</span></button>
+          <span class="muted small" id="analyse-hint">Add a photo to continue.</span>
+        </div>
+        <div id="submit-error" class="form-error" role="alert"></div>
+      </form>
+
+      <div id="result" class="result" tabindex="-1" aria-live="polite"></div>
+
+      <div class="recent panel no-print" id="recent-panel">
+        <div class="recent-head"><h2>Recent analyses</h2><button type="button" class="link-btn" id="clear-recent">Clear</button></div>
+        <ul id="recent-list"></ul>
+        <p class="muted small" style="margin:12px 0 0">Saved only in this browser: label, confidence and date. Photos are never saved.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+<script src="app.js"></script>
+<script src="analyze.js"></script>
+</body>
+</html>

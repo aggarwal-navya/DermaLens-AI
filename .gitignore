@@ -1,14 +1,25 @@
+# Data and trained models live on Google Drive, not in Git (GitHub's 100 MB file limit).
+data/
+models/*
+!models/deploy/
+models/deploy/*
+!models/deploy/README.md
+reports/
+*.pt
+*.pth
+*.npy
+# Python / notebooks / editors
 __pycache__/
 *.pyc
-*.pyo
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
 .venv/
 venv/
+wandb/
 .env
 .env.*
 .DS_Store
 .idea/
 .vscode/
-node_modules/
-dist/
-build/
 *.log

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DermaLens AI — Skin condition decision support</title>
+<meta name="description" content="DermaLens AI: explainable skin-condition decision support tuned for Indian and South Asian skin. Research prototype.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+<a class="skip-link" href="#main">Skip to content</a>
+<header id="site-header"></header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Research prototype · B.Tech major project</span>
+        <h1>DermaLens <span>AI</span></h1>
+        <p class="lead">Explainable skin-condition decision support, built and tuned for Indian and South Asian skin tones — with a heatmap that shows exactly where the model looked.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary btn-lg" href="analyze.html"><span data-icon="upload"></span>Analyse a photo</a>
+          <a class="btn btn-ghost btn-lg" href="about.html">How the model works</a>
+        </div>
+        <div class="hero-meta">
+          <span><span data-icon="check"></span>6 classes + open-set rejection</span>
+          <span><span data-icon="check"></span>Grad-CAM explanations</span>
+          <span><span data-icon="check"></span>Photos never stored</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 400 300" role="img">
+          <defs>
+            <radialGradient id="hg" cx="58%" cy="46%" r="38%">
+              <stop offset="0" stop-color="#d9452b" stop-opacity=".85"/>
+              <stop offset=".45" stop-color="#e5c84b" stop-opacity=".55"/>
+              <stop offset=".8" stop-color="#2aa198" stop-opacity=".25"/>
+              <stop offset="1" stop-color="#2aa198" stop-opacity="0"/>
+            </radialGradient>
+            <clipPath id="clipL"><rect x="12" y="12" width="176" height="176" rx="12"/></clipPath>
+            <clipPath id="clipR"><rect x="212" y="12" width="176" height="176" rx="12"/></clipPath>
+          </defs>
+          <g clip-path="url(#clipL)"><rect x="12" y="12" width="176" height="176" fill="#b9825e"/>
+            <path d="M12 60c40-14 80 10 176-6M12 120c50-12 90 14 176-4M12 165c40-10 100 8 176-2" stroke="#a87150" stroke-width="2" fill="none" opacity=".6"/>
+            <ellipse cx="112" cy="94" rx="40" ry="32" fill="none" stroke="#8a4a35" stroke-width="7" opacity=".75"/>
+            <ellipse cx="112" cy="94" rx="30" ry="22" fill="#a7694d" opacity=".5"/></g>
+          <g clip-path="url(#clipR)"><rect x="212" y="12" width="176" height="176" fill="#b9825e"/>
+            <ellipse cx="312" cy="94" rx="40" ry="32" fill="none" stroke="#8a4a35" stroke-width="7" opacity=".75"/>
+            <rect x="212" y="12" width="176" height="176" fill="#243a7a" opacity=".35"/>
+            <rect x="212" y="12" width="176" height="176" fill="url(#hg)"/></g>
+          <rect x="12" y="12" width="176" height="176" rx="12" fill="none" stroke="var(--border)"/>
+          <rect x="212" y="12" width="176" height="176" rx="12" fill="none" stroke="var(--border)"/>
+          <text x="20" y="208" font-size="12" fill="var(--muted)" font-family="system-ui, sans-serif">Your photo</text>
+          <text x="220" y="208" font-size="12" fill="var(--muted)" font-family="system-ui, sans-serif">Model attention (Grad-CAM)</text>
+          <rect x="12" y="226" width="376" height="62" rx="10" fill="var(--surface-2)"/>
+          <text x="28" y="250" font-size="13" font-weight="700" fill="var(--ink)" font-family="system-ui, sans-serif">Tinea Corporis</text>
+          <text x="352" y="250" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="end" font-family="system-ui, sans-serif">87%</text>
+          <rect x="28" y="262" width="324" height="8" rx="4" fill="var(--border)"/>
+          <rect x="28" y="262" width="282" height="8" rx="4" fill="var(--primary)"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-h">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">How it works</span><h2 id="how-h">From photo to explained result in seconds</h2></div>
+      <ol class="grid grid-4 steps" style="list-style:none;padding:0;margin:0">
+        <li class="card step"><span class="step-num">1</span><h3>Upload a photo</h3><p class="muted">A close, well-lit photo of the affected skin — from your gallery or phone camera.</p></li>
+        <li class="card step"><span class="step-num">2</span><h3>Add context</h3><p class="muted">Optionally add age group, sex and body site. Clinicians use these too — so does the model.</p></li>
+        <li class="card step"><span class="step-num">3</span><h3>Ensemble + fusion</h3><p class="muted">The best fine-tuned vision models are combined into an ensemble and fused with your metadata.</p></li>
+        <li class="card step"><span class="step-num">4</span><h3>Explained result</h3><p class="muted">Top match, calibrated confidence, alternatives and a heatmap of the regions that mattered.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="feat-h">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Features</span><h2 id="feat-h">Designed for real-world, diverse skin</h2></div>
+      <div class="grid grid-3">
+        <article class="card"><div class="icon-badge"><span data-icon="skin"></span></div><h3>Tuned on Indian skin</h3><p class="muted">Six-class detection trained on DermaCon-IN and SkinDisNet, datasets of Indian and South Asian patients.</p></article>
+        <article class="card"><div class="icon-badge"><span data-icon="layers"></span></div><h3>Metadata fusion</h3><p class="muted">Age group, sex and body site are fused with image features, mirroring how dermatologists reason.</p></article>
+        <article class="card"><div class="icon-badge"><span data-icon="heat"></span></div><h3>Explainable heatmaps</h3><p class="muted">Grad-CAM overlays show which regions drove the prediction, so results can be checked, not just trusted.</p></article>
+        <article class="card"><div class="icon-badge accent"><span data-icon="question"></span></div><h3>Knows when it doesn't know</h3><p class="muted">Open-set rejection flags conditions outside its training classes, and photos that are not skin at all.</p></article>
+        <article class="card"><div class="icon-badge"><span data-icon="gauge"></span></div><h3>Calibrated confidence</h3><p class="muted">Temperature-scaled probabilities, so “80%” means roughly 80% — not an over-confident guess.</p></article>
+        <article class="card"><div class="icon-badge"><span data-icon="shield"></span></div><h3>Privacy first</h3><p class="muted">Photos are processed in memory and never stored. No account, no tracking, nothing saved on the server.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cond-h">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Conditions covered</span><h2 id="cond-h">Six classes, plus “not identified”</h2>
+        <p class="lead">If a photo doesn't clearly match one of these, DermaLens says so instead of forcing a label.</p></div>
+      <div class="grid grid-3" id="conditions" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="section section-alt" aria-labelledby="perf-h">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">Model performance</span><h2 id="perf-h">Held-out test set results</h2>
+        <p class="lead">Evaluated on a patient-grouped test split never seen during training. <a href="about.html#evaluation">Read the evaluation method</a>.</p></div>
+      <div class="metrics-strip">
+        <div class="metric"><div class="metric-value" data-metric="accuracy">—</div><div class="metric-label">Accuracy</div></div>
+        <div class="metric"><div class="metric-value" data-metric="macro_f1">—</div><div class="metric-label">Macro F1</div></div>
+        <div class="metric"><div class="metric-value" data-metric="balanced_accuracy">—</div><div class="metric-label">Balanced accuracy</div></div>
+        <div class="metric"><div class="metric-value" data-metric="open_set_auroc">—</div><div class="metric-label">Open-set AUROC</div></div>
+        <div class="metric"><div class="metric-value" data-metric="test_images">—</div><div class="metric-label">Test images</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="team-h">
+    <div class="container grid grid-2" style="gap:24px;align-items:start">
+      <div>
+        <span class="eyebrow">The project</span>
+        <h2 id="team-h">A final-year major project</h2>
+        <p class="lead">DermaLens AI is the B.Tech Computer Science &amp; Engineering major project at Meerut Institute of Technology, Meerut, exploring fair and explainable AI for dermatology in India.</p>
+        <a class="btn btn-ghost" href="about.html">Model &amp; research details <span data-icon="arrow"></span></a>
+      </div>
+      <div class="card">
+        <h3>Team</h3>
+        <ul class="team-list" style="margin:12px 0 20px">
+          <li><span class="avatar">T1</span><span contenteditable="true" spellcheck="false">Team member 1</span></li>
+          <li><span class="avatar">T2</span><span contenteditable="true" spellcheck="false">Team member 2</span></li>
+          <li><span class="avatar">T3</span><span contenteditable="true" spellcheck="false">Team member 3</span></li>
+          <li><span class="avatar">T4</span><span contenteditable="true" spellcheck="false">Team member 4</span></li>
+        </ul>
+        <h3>Supervisor</h3>
+        <p class="muted" style="margin:0">Mrs. Srishti Agarwal, Department of CSE, Meerut Institute of Technology</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container" id="home-disclaimer"></div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+<script src="app.js"></script>
+<script>
+(function () {
+  const { esc, getInfo, FALLBACK_CONDITIONS, fillMetrics, disclaimerHtml } = window.DL;
+  document.getElementById('home-disclaimer').innerHTML = disclaimerHtml();
+  const order = ['Contact Dermatitis', 'Eczema', 'Healthy', 'Psoriasis', 'Scabies', 'Tinea Corporis'];
+  function render(conds) {
+    const names = Object.keys(conds).sort((a, b) => { const r = x => { const i = order.indexOf(x); return i < 0 ? 99 : i; }; return r(a) - r(b) || a.localeCompare(b); });
+    document.getElementById('conditions').innerHTML = names.map(n => {
+      const c = conds[n] || {}; const fb = FALLBACK_CONDITIONS[n] || {};
+      return '<article class="card cond-card"><h3><span class="cond-dot"' + (n === 'Healthy' ? ' style="background:var(--ok)"' : '') + '></span>' + esc(n) + '</h3>' +
+        '<p class="muted">' + esc(c.summary || fb.summary || 'Description unavailable.') + '</p>' +
+        ((c.typical_sites || fb.typical_sites) ? '<div class="sites"><strong>Typical sites:</strong> ' + esc(c.typical_sites || fb.typical_sites) + '</div>' : '') + '</article>';
+    }).join('');
+  }
+  render(FALLBACK_CONDITIONS);
+  getInfo().then(info => {
+    fillMetrics(info);
+    if (info && info.conditions && Object.keys(info.conditions).length) {
+      const merged = Object.assign({}, info.conditions);
+      (info.classes || order).forEach(n => { if (!merged[n]) merged[n] = FALLBACK_CONDITIONS[n] || {}; });
+      render(merged);
+    }
+  });
+})();
+</script>
+</body>
+</html>

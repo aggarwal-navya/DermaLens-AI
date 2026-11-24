@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model &amp; Research — DermaLens AI</title>
+<meta name="description" content="How DermaLens AI works: pipeline, datasets, evaluation, limitations and ethics.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="about">
+<a class="skip-link" href="#main">Skip to content</a>
+<header id="site-header"></header>
+
+<main id="main">
+  <section class="page-head">
+    <div class="container">
+      <span class="eyebrow">Model &amp; research</span>
+      <h1 style="font-size:clamp(1.75rem,3.5vw,2.5rem)">How DermaLens AI works</h1>
+      <p class="lead" style="margin:0">The pipeline, the data, how we evaluated it — and, just as important, where it falls short.</p>
+      <nav class="toc" aria-label="On this page">
+        <a href="#pipeline">Pipeline</a><a href="#datasets">Datasets</a><a href="#evaluation">Evaluation</a><a href="#metrics">Metrics</a><a href="#limitations">Limitations</a><a href="#privacy">Ethics &amp; privacy</a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section" id="pipeline" aria-labelledby="pipe-h">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">01</span><h2 id="pipe-h">Pipeline overview</h2></div>
+      <div class="pipeline">
+        <div class="pipe-step"><div class="k">Input</div><h3>Photo + metadata</h3><p>Skin photo resized to <span id="img-size">288</span> px; optional age group, sex and body sites.</p></div>
+        <div class="pipe-step"><div class="k">Gate</div><h3>Skin check</h3><p>Photos that do not look like skin are returned as “not skin”, with no diagnosis attempted.</p></div>
+        <div class="pipe-step"><div class="k">Backbones</div><h3>Image ensemble</h3><p id="model-name">Ensemble of fine-tuned vision backbones (e.g. ConvNeXt-Small + ViT-Base DINOv2).</p></div>
+        <div class="pipe-step"><div class="k">Fusion</div><h3>Metadata fusion</h3><p>Image embeddings combined with encoded metadata; temperature-calibrated softmax.</p></div>
+        <div class="pipe-step"><div class="k">Output</div><h3>Decide + explain</h3><p>Open-set threshold → identified / healthy / not identified; Grad-CAM heatmap.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="datasets" aria-labelledby="data-h">
+    <div class="container grid grid-2" style="gap:24px">
+      <div class="prose">
+        <span class="eyebrow">02</span><h2 id="data-h">Datasets</h2>
+        <p>Most public dermatology datasets are dominated by lighter skin. DermaLens is trained and tuned on data from Indian and South Asian patients, where inflammation often appears brown, violet or grey rather than red.</p>
+      </div>
+      <div class="grid" style="gap:16px">
+        <div class="card"><h3>DermaCon-IN</h3><p class="muted">Dermatologist-labelled photos from South Indian outpatient clinics (Fitzpatrick types 3–6). Source for all five conditions, including Psoriasis.</p></div>
+        <div class="card"><h3>SkinDisNet</h3><p class="muted">Smartphone photos from two Bangladeshi medical colleges — Tinea, Scabies, Eczema and Contact Dermatitis. Original images only; augmented copies excluded.</p></div>
+        <div class="card"><h3>MCSI (healthy class)</h3><p class="muted">A small set of web-collected normal-skin images (CC BY 4.0, credited) used for the Healthy class.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="evaluation" aria-labelledby="eval-h">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">03</span><h2 id="eval-h">Evaluation approach</h2></div>
+      <div class="grid grid-4">
+        <div class="card"><div class="icon-badge"><span data-icon="user"></span></div><h3>Patient-grouped split</h3><p class="muted">All photos of one patient stay in the same split, so the test set never contains a familiar face or lesion.</p></div>
+        <div class="card"><div class="icon-badge"><span data-icon="gauge"></span></div><h3>Bootstrap CIs</h3><p class="muted">Metrics are reported with 95% bootstrap confidence intervals, not just a single point estimate.</p></div>
+        <div class="card"><div class="icon-badge"><span data-icon="skin"></span></div><h3>Fairness by skin type</h3><p class="muted">Accuracy is compared across Fitzpatrick types 3–4 vs 5–6 (DermaCon-IN subset) to check darker skin is not under-served.</p></div>
+        <div class="card"><div class="icon-badge accent"><span data-icon="question"></span></div><h3>Shortcut test</h3><p class="muted">Same-disease, different-source tests check whether the model recognises the disease or merely the dataset’s photo style.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="metrics" aria-labelledby="met-h">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">04</span><h2 id="met-h">Metrics</h2><p class="lead">Held-out, patient-grouped test set. Values load from the deployed model card.</p></div>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Model test-set metrics</caption>
+          <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it means</th></tr></thead>
+          <tbody>
+            <tr><td>Accuracy</td><td class="num" data-metric="accuracy">—</td><td class="muted">Share of test photos classified correctly.</td></tr>
+            <tr><td>Macro F1</td><td class="num" data-metric="macro_f1">—</td><td class="muted">Average F1 across classes; rare classes count equally.</td></tr>
+            <tr><td>Balanced accuracy</td><td class="num" data-metric="balanced_accuracy">—</td><td class="muted">Mean per-class recall; robust to class imbalance.</td></tr>
+            <tr><td>Open-set AUROC</td><td class="num" data-metric="open_set_auroc">—</td><td class="muted">How well unseen conditions are separated from known ones (1.0 = perfect).</td></tr>
+            <tr><td>Test images</td><td class="num" data-metric="test_images">—</td><td class="muted">Photos in the held-out test set.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted small" style="margin-top:12px" id="model-meta"></p>
+    </div>
+  </section>
+
+  <section class="section" id="limitations" aria-labelledby="lim-h">
+    <div class="container grid grid-2" style="gap:32px">
+      <div class="prose">
+        <span class="eyebrow">05</span><h2 id="lim-h">Limitations</h2>
+        <ul>
+          <li>Covers only five conditions plus healthy skin; anything else should be rejected as “not identified”, but rejection is not perfect. Not for skin cancer.</li>
+          <li>Healthy and Psoriasis each come from a single dataset, so scores may partly reflect dataset style.</li>
+          <li>Fairness results cover DermaCon-IN only; Fitzpatrick type 6 has very few test images. North Indian populations are not directly sampled.</li>
+          <li>Trained on clinical photos; dermoscopy images are out of scope.</li>
+          <li>Photo quality (lighting, blur, distance, camera) strongly affects results.</li>
+          <li>Not validated in a prospective clinical study and not approved as a medical device.</li>
+          <li>Heatmaps show where the model looked, not why a condition is present.</li>
+        </ul>
+      </div>
+      <div class="prose" id="privacy">
+        <span class="eyebrow">06</span><h2>Ethics &amp; privacy</h2>
+        <ul>
+          <li><strong>No storage:</strong> photos are processed in memory and discarded after the response.</li>
+          <li><strong>No accounts or tracking:</strong> the only thing kept is an optional history of labels in your own browser.</li>
+          <li><strong>Decision support only:</strong> results are meant to inform a conversation with a dermatologist, never replace one.</li>
+          <li><strong>Fairness:</strong> built around Indian and South Asian skin to reduce the bias of Western-centric datasets.</li>
+          <li><strong>Data use:</strong> training data was used under the terms of the respective dataset licences.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0"><div class="container" id="about-disclaimer"></div></section>
+</main>
+
+<footer id="site-footer"></footer>
+<script src="app.js"></script>
+<script>
+(function () {
+  const { getInfo, fillMetrics, disclaimerHtml } = window.DL;
+  document.getElementById('about-disclaimer').innerHTML = disclaimerHtml();
+  getInfo().then(info => {
+    fillMetrics(info);
+    if (!info || !info.model) return;
+    const m = info.model;
+    if (m.image_size) document.getElementById('img-size').textContent = String(m.image_size);
+    const bits = [];
+    if (m.name) bits.push('Model: ' + m.name);
+    if (m.exported_on) bits.push('exported ' + m.exported_on);
+    if (typeof m.uses_metadata === 'boolean') bits.push(m.uses_metadata ? 'metadata fusion on' : 'image only');
+    if (info.app_version) bits.push('app v' + info.app_version);
+    document.getElementById('model-meta').textContent = bits.join(' · ');
+  });
+})();
+</script>
+</body>
+</html>
