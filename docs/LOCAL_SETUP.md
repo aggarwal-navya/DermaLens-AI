@@ -10,10 +10,10 @@ cd DermaLens-AI
 ```
 
 ## 2. Create a virtual environment and install
-Windows (PowerShell):
+Windows (CMD):
 ```powershell
-py -3.11 -m venv .venv
-.venv\Scripts\Activate.ps1
+py -m venv .venv
+.venv\Scripts\Activate
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 pip install -r app/requirements.txt
 ```
